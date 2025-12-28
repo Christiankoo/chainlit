@@ -5,8 +5,8 @@ import base64
 import secrets
 import requests
 import jwt
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse, PlainTextResponse
@@ -19,7 +19,7 @@ TENANT_ID = os.environ.get("AZURE_TENANT_ID")
 CLIENT_ID = os.environ.get("AZURE_CLIENT_ID")
 REDIRECT_URI = os.environ.get("AZURE_REDIRECT_URI")
 SECRET_ID = os.environ.get("AZURE_SECRET_ID")
-SESSION_SECRET= "change-me-to-a-long-random-string"
+SESSION_SECRET= os.environ.get("SESSION_SECRET")
 
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0"
 AUTHORIZE_URL = f"{AUTHORITY}/authorize"

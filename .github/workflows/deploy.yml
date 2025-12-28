@@ -2,17 +2,15 @@ name: Build and deploy container to Azure App Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
 
 env:
-  ACR_LOGIN_SERVER: takehomeassigment.azurecr.io
   IMAGE_NAME: myapp
-  WEBAPP_NAME: takehomeassigment
-  RESOURCE_GROUP: takehomeassigment
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
 
     steps:
       - name: Checkout
@@ -24,9 +22,13 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Login to ACR
-        run: az acr login --name takehomeassigment
+        env:
+          ACR_NAME: ${{ vars.ACR_NAME }}
+        run: az acr login --name $ACR_NAME
 
       - name: Build and push (linux/amd64)
+        env:
+          ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
         run: |
           docker buildx create --use --name builder || true
           docker buildx build \
@@ -37,5 +39,8 @@ jobs:
             .
 
       - name: Restart Web App (force pull latest)
+        env:
+          RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+          WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
         run: |
           az webapp restart -g $RESOURCE_GROUP -n $WEBAPP_NAME

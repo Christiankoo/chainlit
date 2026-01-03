@@ -14,6 +14,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from chainlit.utils import mount_chainlit
 from app.auth_middleware import AuthGate
+from app.crud.sessions import router_crud
 
 TENANT_ID = os.environ.get("AZURE_TENANT_ID")
 CLIENT_ID = os.environ.get("AZURE_CLIENT_ID")
@@ -32,6 +33,7 @@ PUBLIC_PATHS = {
 }
 
 app = FastAPI(title="FastAPI + Chainlit")
+app.include_router(router_crud)
 
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET, same_site="lax", https_only=False)
 

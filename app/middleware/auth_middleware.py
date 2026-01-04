@@ -85,7 +85,7 @@ class AuthGate:
 
         if not raw:
             if scope_type == "http":
-                resp = RedirectResponse(f"/login?next={next_url}")
+                resp = RedirectResponse(f"/api/auth/login?next={next_url}")
                 await resp(scope, receive, send)
                 return
 
@@ -96,7 +96,7 @@ class AuthGate:
 
         if not claims:
             if scope_type == "http":
-                resp = RedirectResponse(f"/login?next={next_url}")
+                resp = RedirectResponse(f"/api/auth/login?next={next_url}")
                 await resp(scope, receive, send)
                 return
 

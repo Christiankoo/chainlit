@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    image: myapp:local
+    container_name: sample_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+

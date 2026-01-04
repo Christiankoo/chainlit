@@ -46,7 +46,6 @@ def callback(request: Request, code: str | None = None, state: str | None = None
         return PlainTextResponse("Missing code", status_code=400)
 
     expected_state = request.session.get("oidc_state")
-    print(f'Expected state {expected_state} session_state {state}')
     if (expected_state and state != expected_state) or (not expected_state) or (not state):
         return PlainTextResponse("Invalid state", status_code=400)
 

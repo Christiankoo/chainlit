@@ -64,6 +64,13 @@ class AuthGate:
 
         except Exception:
             return None
+        
+    async def _reject_unauth(self,scope_type: str, next_url: str, scope, receive, send):
+        if scope_type == "http":
+            resp = RedirectResponse(f"/api/auth/login?next={next_url}")
+            await resp(scope, receive, send)
+        else:
+            await send({"type": "websocket.close", "code": 4401})
 
     async def __call__(self, scope, receive, send):
         scope_type = scope["type"]
@@ -83,24 +90,9 @@ class AuthGate:
         qs = scope.get("query_string", b"").decode()
         next_url = f"{path}?{qs}" if qs else path
 
-        if not raw:
-            if scope_type == "http":
-                resp = RedirectResponse(f"/api/auth/login?next={next_url}")
-                await resp(scope, receive, send)
-                return
-
-            await send({"type": "websocket.close", "code": 4401})
-            return
-
-        claims = self._verify_auth_cookie(raw)
-
+        claims = self._verify_auth_cookie(raw) if raw else None
         if not claims:
-            if scope_type == "http":
-                resp = RedirectResponse(f"/api/auth/login?next={next_url}")
-                await resp(scope, receive, send)
-                return
-
-            await send({"type": "websocket.close", "code": 4401})
+            await self._reject_unauth(scope_type, next_url, scope, receive, send)
             return
 
         await self.app(scope, receive, send)

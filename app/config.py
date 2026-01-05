@@ -1,7 +1,12 @@
 import os
+
 # UNCOMMENT the following two lines if you are using a .env file to manage environment variables
 # from dotenv import load_dotenv
 # load_dotenv()
+
+from azure.monitor.opentelemetry import configure_azure_monitor
+# Configure Azure Monitor for OpenTelemetry
+configure_azure_monitor()
 
 TENANT_ID = os.environ.get("AZURE_TENANT_ID")
 CLIENT_ID = os.environ.get("AZURE_CLIENT_ID")
@@ -17,9 +22,7 @@ JWKS_URL = f"https://login.microsoftonline.com/{TENANT_ID}/discovery/v2.0/keys"
 PUBLIC_PATHS = {
     "/healthz",
     "/api/auth/login",
-    "/api/auth/callback",
-    "/docs",
-    "/openapi.json"
+    "/api/auth/callback"
 }
 
 SERVER = os.getenv("AZURE_SQL_SERVER")

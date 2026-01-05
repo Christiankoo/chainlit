@@ -14,6 +14,9 @@ router_entra_id = APIRouter(prefix="/api/auth", tags=["entraid"])
 def _b64url(data: bytes) -> str:
     return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
 
+def _get_jwks():
+    return requests.get(config.JWKS_URL, timeout=10).json()
+
 @router_entra_id.get("/login")
 def login(request: Request, next: str | None = "/chat"):
     request.session["next"] = next
@@ -34,9 +37,6 @@ def login(request: Request, next: str | None = "/chat"):
     url = requests.Request("GET", config.AUTHORIZE_URL, params=params).prepare().url
     print(f'State {state}')
     return RedirectResponse(url)
-
-def _get_jwks():
-    return requests.get(config.JWKS_URL, timeout=10).json()
 
 @router_entra_id.get("/callback")
 def callback(request: Request, code: str | None = None, state: str | None = None, error: str | None = None):

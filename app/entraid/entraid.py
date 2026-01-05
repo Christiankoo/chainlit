@@ -35,7 +35,6 @@ def login(request: Request, next: str | None = "/chat"):
     }
 
     url = requests.Request("GET", config.AUTHORIZE_URL, params=params).prepare().url
-    print(f'State {state}')
     return RedirectResponse(url)
 
 @router_entra_id.get("/callback")

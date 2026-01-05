@@ -19,7 +19,7 @@ app.include_router(router_entra_id)
 mount_chainlit(
     app=app, 
     target="cl_app/app.py", 
-    path="/chat"
+    path="/"
 )
 
 # Session middleware

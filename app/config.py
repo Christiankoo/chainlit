@@ -4,9 +4,14 @@ import os
 # from dotenv import load_dotenv
 # load_dotenv()
 
-from azure.monitor.opentelemetry import configure_azure_monitor
-# Configure Azure Monitor for OpenTelemetry
-configure_azure_monitor()
+def setup_telemetry() -> None:
+    # Only enable if explicitly configured
+    conn = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+    if not conn:
+        return
+
+    from azure.monitor.opentelemetry import configure_azure_monitor
+    configure_azure_monitor()
 
 TENANT_ID = os.environ.get("AZURE_TENANT_ID")
 CLIENT_ID = os.environ.get("AZURE_CLIENT_ID")

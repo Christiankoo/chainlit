@@ -5,7 +5,7 @@ A production-ready web application that integrates **FastAPI** with **Chainlit**
 ## 🌟 Features
 
 - **FastAPI Backend**: Modern, high-performance Python web framework
-- **Chainlit Integration**: Interactive chat interface mounted at `/chat`
+- **Chainlit Integration**: Interactive chat interface mounted at `/`
 - **Microsoft Entra ID Authentication**: OAuth 2.0 / OpenID Connect flow with JWT validation
 - **Session Management**: Persistent session storage in Azure SQL Database
 - **Custom Middleware**: 
@@ -43,7 +43,7 @@ A production-ready web application that integrates **FastAPI** with **Chainlit**
 │                                                     │
 │  ┌──────────────────────────────────────────────┐   │
 │  │   Chainlit Chat Interface                    │   │
-│  │   /chat (mounted Chainlit app)               │   │
+│  │   / (mounted Chainlit app)               │   │
 │  └──────────────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────┤
 │  Middleware Stack:                                  │
@@ -141,7 +141,7 @@ A production-ready web application that integrates **FastAPI** with **Chainlit**
 
 6. **Access the application**
    - API Documentation: http://localhost:8000/docs
-   - Chat Interface: http://localhost:8000/chat
+   - Chat Interface: http://localhost:8000
    - Health Check: http://localhost:8000/healthz
 
 ### Docker Deployment
@@ -212,7 +212,7 @@ CREATE TABLE sessions (
 
 ### Chat Interface
 
-- `/chat` - Chainlit conversational interface
+- `/` - Chainlit conversational interface
 
 ## 🧪 Testing
 
